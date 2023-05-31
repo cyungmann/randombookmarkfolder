@@ -14,4 +14,16 @@ var booksFolder = bookmarkTree.Single( x => x.Type == BookmarkTreeNodeType.Folde
 var folders = booksFolder.Descendants().Where( x => x.Type == BookmarkTreeNodeType.Folder ).ToArray();
 var rnd = new Random();
 for ( var i = 0; i < 20; ++i )
-	Console.WriteLine( folders[rnd.Next( folders.Length )].GetStringPath() );
+	Console.WriteLine( RandomWalk( booksFolder, rnd ).GetStringPath() );
+
+static BookmarkTreeNode RandomWalk(BookmarkTreeNode root, Random random)
+{
+	while (true)
+	{
+		var chooseFrom = root.Descendants().Where( x => x.Type == BookmarkTreeNodeType.Folder ).ToList();
+		var i = random.Next( chooseFrom.Count + 1 );
+		if ( i == chooseFrom.Count )
+			return root;
+		root = chooseFrom[i];
+	}
+}
