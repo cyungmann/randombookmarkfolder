@@ -11,16 +11,15 @@ var bookmarksFile = ( await JsonSerializer.DeserializeAsync<RawBookmarksFile>( f
 } ) )!;
 var bookmarkTree = BookmarkTreeNode.FromRawBookmarksFile( bookmarksFile );
 var booksFolder = bookmarkTree.Single( x => x.Type == BookmarkTreeNodeType.Folder && x.Name == "books" );
-var folders = booksFolder.Descendants().Where( x => x.Type == BookmarkTreeNodeType.Folder ).ToArray();
 var rnd = new Random();
-for ( var i = 0; i < 20; ++i )
+for ( var i = 0; i < 100; ++i )
 	Console.WriteLine( RandomWalk( booksFolder, rnd ).GetStringPath() );
 
 static BookmarkTreeNode RandomWalk(BookmarkTreeNode root, Random random)
 {
 	while (true)
 	{
-		var chooseFrom = root.Descendants().Where( x => x.Type == BookmarkTreeNodeType.Folder ).ToList();
+		var chooseFrom = root.Children.Where( x => x.Type == BookmarkTreeNodeType.Folder ).ToList();
 		var i = random.Next( chooseFrom.Count + 1 );
 		if ( i == chooseFrom.Count )
 			return root;
